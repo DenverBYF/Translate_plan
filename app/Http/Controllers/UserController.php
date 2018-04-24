@@ -11,27 +11,27 @@ use Qiniu\Storage\UploadManager;
 
 class UserController extends Controller
 {
-    //
-	public function index()
-	{
-
-	}
-
 
 	public function show($id)
 	{
-		$user = Auth::user();
+		$user = User::findOrFail($id);
 		return view('index.person', compact('user'));
 	}
 
 	public function edit($id)
 	{
+		if ($id != Auth::id()) {
+			return view('layouts._403');
+		}
 		$user = Auth::user();
 		return view('index.edit', compact('user'));
 	}
 
 	public function update($id, UserRequest $request)
 	{
+		if ($id != Auth::id()) {
+			return view('layouts._403');
+		}
 		$user = Auth::user();
 		if ($request->hasFile('img')) {
 			if ($request->file('img')->isValid()) {

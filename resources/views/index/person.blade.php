@@ -40,9 +40,11 @@
                             <h4><strong>WeChat</strong></h4>
                             <p>{{ $user->wechat }}</p>
                             <hr>
+                            @if ($user->id === Auth::id())
                             <a href="{{ route('person.edit', Auth::id()) }}">
                                 <i class="glyphicon glyphicon-edit"></i>
                             </a>编辑个人资料
+                            @endif
                         </div>
 
                     </div>
