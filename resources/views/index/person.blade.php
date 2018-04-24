@@ -29,9 +29,9 @@
                             @endif
                             <hr>
                             <h4><strong>性别</strong></h4>
-                            @if ($user->age == 1)
+                            @if ($user->sex === 1)
                                 <p>男</p>
-                            @elseif ($user->age === 2)
+                            @elseif ($user->sex === 2)
                                 <p>女</p>
                             @else
                                 <p>保密</p>
