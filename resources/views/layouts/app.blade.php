@@ -4,10 +4,10 @@
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>协同翻译平台</title>
+    <title>@yield('title') 协同翻译平台</title>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}">
+    {{--<link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
     <style>
         body {
             font-family: Hiragino Sans GB, "Hiragino Sans GB", Helvetica, "Microsoft YaHei", Arial,sans-serif;
@@ -48,12 +48,14 @@
             color: #1b1e21;
         }
     </style>
+    @yield('css')
 </head>
 
 <body>
     <div id="app" class="{{ route_class() }}-page">
         @include('layouts._header')
         <div class="container">
+            @include('layouts._message')
             @yield('content')
         </div>
         @include('layouts._footer')

@@ -18,9 +18,7 @@ Route::get('/', function () {
 /*用户功能路由组*/
 Route::middleware(['auth'])->prefix('user')->group( function () {
 	//个人中心
-	Route::get('/person', function () {
-		return view('index.person');
-	})->name('person');
+	Route::resource('/person', 'UserController');
 	//文章相关
 });
 
