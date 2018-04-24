@@ -20,7 +20,18 @@ Route::middleware(['auth'])->prefix('user')->group( function () {
 	//个人中心
 	Route::resource('/person', 'UserController');
 	//文章相关
+	Route::resource('/article', 'ArticleController');
 });
+
+/*主页路由组*/
+Route::prefix('')->group(function () {
+	//用户信息
+	Route::get('/users/{id}', function ($id) {
+		$user = \App\User::findOrFail($id);
+		return view('index.person', compact('user'));
+	});
+});
+
 
 //搜索
 Route::post('/search', function () {

@@ -61,5 +61,6 @@
         @include('layouts._footer')
     </div>
 <script src="{{ asset('js/app.js') }}"></script>
+@yield('js')
 </body>
 </html>
