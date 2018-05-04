@@ -32,12 +32,22 @@
                                 <input class="form-control" type="text" name="title" id="title"
                                         value="{{ old('title', $article->title??'') }}" placeholder="文章标题">
                             </div>
+
                             <div class="form-group">
                                 <select class="form-control" id="t_id" name="t_id">
                                     <option value="" hidden disabled selected>请选择文章分类</option>
                                     @foreach($type as $each)
                                         <option value="{{ $each->id }}">{{ $each->name }}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" id="divide" name="divide">
+                                    <option value="" hidden disabled selected>请选择分割长度</option>
+                                    <option value="300">300</option>
+                                    <option value="500">500</option>
+                                    <option value="800">800</option>
+                                    <option value="1000">1000</option>
                                 </select>
                             </div>
                             <div class="form-group">

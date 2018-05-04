@@ -49,20 +49,24 @@ class ArticleController extends Controller
 		$num = 0;
 		$part = [];
 		$buffer = "";
+		$divide = $request->input('divide')??300;
 		foreach ($data as $eachPart) {
 			$buffer .= $eachPart;
 			$num = $num + strlen($eachPart);
-			if ($num > 300) {
+			if ($num > $divide and substr_count($buffer, '```')%2 === 0) {
 				$part[] = $buffer;
 				$num = 0;
 				$buffer = "";
 			}
 		}
+		//添加剩余的内容
+		$part[] = $buffer;
 		$article = new Article();
 		$article->title = $request->input('title');
 		$article->t_id = $request->input('t_id');
 		$article->u_id = Auth::id();
 		$article->content = $content;
+		//事务处理,储存文章及分段结果
 		DB::transaction(function () use ($article, $part) {
 			$article->save();
 			foreach ($part as $eachPart) {
@@ -85,7 +89,8 @@ class ArticleController extends Controller
     {
         //
 		$article = Article::findOrFail($id);
-		return view('article.show', compact('article'));
+		$part = Part::where('a_id', $id)->get();
+		return view('article.show', compact('article', 'part'));
     }
 
     /**

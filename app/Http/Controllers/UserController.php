@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ class UserController extends Controller
 	public function show($id)
 	{
 		$user = User::findOrFail($id);
-		return view('index.person', compact('user'));
+		$articlePush = Article::where('u_id', $id)->paginate(5);
+		return view('index.person', compact('user', 'articlePush'));
 	}
 
 	public function edit($id)

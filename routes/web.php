@@ -21,6 +21,8 @@ Route::middleware(['auth'])->prefix('user')->group( function () {
 	Route::resource('/person', 'UserController');
 	//文章相关
 	Route::resource('/article', 'ArticleController');
+	//翻译相关
+	Route::resource('/translate', 'TranslateController');
 });
 
 /*主页路由组*/
@@ -29,7 +31,13 @@ Route::prefix('')->group(function () {
 	Route::get('/users/{id}', function ($id) {
 		$user = \App\User::findOrFail($id);
 		return view('index.person', compact('user'));
-	});
+	})->name('users');
+
+	Route::get('topic/{id}', function ($id) {
+		$article = \App\Article::findOrFail($id);
+		$part = \App\Part::where('a_id', $id)->get();
+		return view('article.show', compact('article', 'part'));
+	})->name('topic');
 });
 
 
@@ -40,7 +48,8 @@ Route::post('/search', function () {
 
 //主页面
 Route::get('/home', function () {
-	return view('welcome');
+	$article = \App\Article::where('t_id',1)->paginate(15);
+	return view('welcome', compact('article'));
 })->name('home');
 
 //用户权限控制路由

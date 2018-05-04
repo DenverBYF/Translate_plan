@@ -11,4 +11,9 @@ class Article extends Model
 	{
 		return $this->belongsTo('App\User', 'u_id');
 	}
+
+	public function type()
+	{
+		return $this->belongsTo('App\Type', 't_id');
+	}
 }

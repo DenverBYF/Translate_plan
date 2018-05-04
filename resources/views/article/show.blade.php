@@ -316,35 +316,29 @@
 
 @section('content')
     <div class="row">
-
-        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs author-info">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 topic-content">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="text-center">
-                        发布者：{{ $article->user->name }}
+                    <div class="article-meta text-center">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        发布者: <a href="{{ route('users', ['id' => $article->user->id]) }}">{{ $article->user->name }}</a>
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        发布时间: {{ $article->created_at }}
                     </div>
-                    <hr>
-                    <div class="media">
-                        <div align="center">
-                            <a href="{{ route('person.show', $article->user->id) }}">
-                                <img class="thumbnail img-responsive" src="{{ $article->user->url }}" width="300px" height="300px">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 topic-content">
-            <div class="panel panel-default">
-                <div class="panel-body">
                     <h1 class="text-center">
                         <strong>{{ $article->title }}</strong>
                     </h1>
-
-                    <div class="topic-body">
-                        {!! Parsedown::instance()->setMarkupEscaped(true)->text($article->content) !!}
+                    @foreach($part as $eachPart)
+                    <div class="topic-body col-md-9 col-lg-9 col-sm-9 col-xs-9" id="{{ $eachPart->id }}">
+                        {!! Parsedown::instance()->setMarkupEscaped(true)->text($eachPart->content) !!}
                     </div>
+                    <div class="col-md-2 col-lg-2 col-md-offset-1 panel panel-default" >
+                        <div class="panel-body">
+                            <button class="text-center btn btn-danger" id="{{ $eachPart->id }}">我来翻译</button>
+                        </div>
+                    </div>
+                    <hr class="col-md-12 col-lg-12 ">
+                    @endforeach
 
                     <div class="operate">
                         <hr>
@@ -357,15 +351,8 @@
                         </a>
                         @endif
                     </div>
-
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3 col-sm-3 hidden-sm hidden-xs author-info">
-            <div class=""></div>
-
         </div>
     </div>
 @endsection

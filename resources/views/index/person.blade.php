@@ -3,7 +3,34 @@
 @section('title', $user->name)
 @section('css')
     <style>
-
+        .topic-list > .nav > li > a {
+            position: relative;
+            display: block;
+            padding: 5px 14px;
+            font-size: 0.9em;
+        }
+        .a {
+            color: #444444;
+        }
+        .topic-list>hr {
+            margin-top: 12px;
+            margin-bottom: 12px;
+            border: 0;
+            border-top: 1px solid #dcebf5;
+        }
+        .topic-list>.badge {
+            background-color: #d8d8d8;
+        }
+        .topic-list>.meta {
+            font-size:0.9em;
+            color: #b3b3b3;
+        }
+        #title {
+            color: #444444;
+        }
+        .meta>a {
+            color: #b3b3b3;
+        }
     </style>
 @endsection
 @section('content')
@@ -53,10 +80,12 @@
         </div>
         <div class="col-sm-12 col-xs-12 col-md-9 col-lg-9">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <li role="presentation"><a href="#">发布文章列表</a></li>
+                </div>
                 <div class="panel-body">
-                    <span>
-                        <h1 class="panel-title pull-left">发布文章列表</h1>
-                    </span>
+                    @include('article.list', ['article' => $articlePush])
+                    {!! $articlePush->render() !!}
                 </div>
             </div>
             <div class="panel panel-default">
