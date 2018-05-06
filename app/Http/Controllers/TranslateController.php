@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Part;
 use Illuminate\Http\Request;
 
 class TranslateController extends Controller
@@ -57,6 +58,8 @@ class TranslateController extends Controller
     public function edit($id)
     {
         //
+		$article = Part::findOrFail($id);
+		return view('article.translate', compact('article'));
     }
 
     /**

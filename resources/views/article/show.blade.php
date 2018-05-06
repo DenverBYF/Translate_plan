@@ -334,7 +334,9 @@
                     </div>
                     <div class="col-md-2 col-lg-2 col-md-offset-1 panel panel-default" >
                         <div class="panel-body">
-                            <button class="text-center btn btn-danger" id="{{ $eachPart->id }}">我来翻译</button>
+                            <a href="{{ route('translate.edit', ['id' => $eachPart->id]) }}">
+                                <button class="text-center btn btn-danger" id="{{ $eachPart->id }}">我来翻译</button>
+                            </a>
                         </div>
                     </div>
                     <hr class="col-md-12 col-lg-12 ">
