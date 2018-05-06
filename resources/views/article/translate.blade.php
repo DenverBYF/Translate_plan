@@ -18,19 +18,21 @@
                         <form class="form-horizontal" role="form"
                                 action="{{ route('translate.store') }}" method="post" accept-charset="utf-8">
                             {{ csrf_field() }}
+                            <input type="hidden" value="{{ old('pid', $article->id) }}" name="pid" id="pid">
+                            <input type="hidden" value="{{ old('aid', $article->article->id) }}" name="aid" id="aid">
                             <div class="form-group">
                                 <input class="form-control" type="text" name="title" id="title"
-                                        value="{{ $article->article->title }}" placeholder="文章标题" readonly="readonly">
+                                        value="{{ old('title', $article->article->title) }}" placeholder="文章标题" readonly="readonly">
                             </div>
                             <div class="form-group col-md-6 col-lg-6 col-xs-12 col-sm-12">
                                 <label for="content">原文</label>
                                 <textarea id="content" name="content"
-                                    class="form-control" cols="50" readonly>{{ $article->content }}</textarea>
+                                    class="form-control" cols="50" readonly>{{ old('content', $article->content) }}</textarea>
                             </div>
                             <div class="form-group col-md-6 col-lg-6 col-xs-12 col-sm-12">
                                 <label for="translate">译文</label>
                                 <textarea id="translate" name="translate"
-                                        class="form-control" cols="50" cols="25">{{ $article->content }}</textarea>
+                                        class="form-control" cols="50" cols="25">{{ old('translate', $article->content) }}</textarea>
                             </div>
                             <div class="well well-sm">
                                 <button type="submit" class="btn btn-primary">

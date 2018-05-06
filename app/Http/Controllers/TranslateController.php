@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Part;
+use App\Translate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TranslateController extends Controller
 {
@@ -36,6 +39,17 @@ class TranslateController extends Controller
     public function store(Request $request)
     {
         //
+		$translate = new Translate();
+		$translate->content = $request->input('translate');
+		$translate->u_id = Auth::id();
+		$translate->p_id = $request->input('pid');
+		if ($translate->save()) {
+			return redirect()->route('article.show', $request->input('aid'))->with('success', '翻译成功, 请等待审核');
+		} else {
+			$errors = collect(['储存失败']);
+			return view('article.translate', compact('errors'));
+		}
+
     }
 
     /**

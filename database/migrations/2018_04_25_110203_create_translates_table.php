@@ -16,7 +16,7 @@ class CreateTranslatesTable extends Migration
         Schema::create('translates', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('p_id');
-			$table->integer('status');
+			$table->integer('status')->default(0);
 			$table->integer('u_id');
 			$table->longText('content');
             $table->timestamps();
