@@ -89,19 +89,33 @@
                 </div>
             </div>
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <li role="presentation"><a href="#">翻译文章列表</a></li>
+                </div>
                 <div class="panel-body">
-                    <span>
-                        <h1 class="panel-title pull-left">点赞文章列表</h1>
-                    </span>
+                    @include('article.list', ['article' => $articleTranslate])
+                    {!! $articleTranslate->render() !!}
                 </div>
             </div>
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <li role="presentation"><a href="#">点赞文章列表</a></li>
+                </div>
                 <div class="panel-body">
-                    <span>
-                        <h1 class="panel-title pull-left">翻译文章列表</h1>
-                    </span>
+                    @include('article.list', ['article' => $articleLike])
                 </div>
             </div>
+            @if(\Illuminate\Support\Facades\Auth::id() === $user->id)
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <li role="presentation"><a href="#">待审核翻译</a></li>
+                </div>
+                <div class="panel-body">
+                    @include('translate.list', ['article' => $articleAccept])
+                    {!! $articlePush->render() !!}
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 @stop

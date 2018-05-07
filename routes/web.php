@@ -23,14 +23,15 @@ Route::middleware(['auth'])->prefix('user')->group( function () {
 	Route::resource('/article', 'ArticleController');
 	//翻译相关
 	Route::resource('/translate', 'TranslateController');
+	//审核翻译
+	Route::get('/accept/{id}/{status}', 'TranslateController@accept')->name('accept');
 });
 
 /*主页路由组*/
 Route::prefix('')->group(function () {
 	//用户信息
 	Route::get('/users/{id}', function ($id) {
-		$user = \App\User::findOrFail($id);
-		return view('index.person', compact('user'));
+		return redirect()->route('person.show', ['id' => $id]);
 	})->name('users');
 
 	Route::get('topic/{id}', function ($id) {

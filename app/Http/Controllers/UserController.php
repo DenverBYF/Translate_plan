@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Http\Requests\UserRequest;
+use App\Translate;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Qiniu\Storage\UploadManager;
 
@@ -17,7 +19,20 @@ class UserController extends Controller
 	{
 		$user = User::findOrFail($id);
 		$articlePush = Article::where('u_id', $id)->paginate(5);
-		return view('index.person', compact('user', 'articlePush'));
+		$articleAccept = Translate::where('a_u_id', $id)->where('status', 0)->paginate(5);
+		$articlePart = DB::table('articles')
+							->join('parts', 'articles.id', '=', 'parts.a_id')
+							->join('translates', 'translates.p_id', '=', 'parts.id')
+							->where('translates.u_id', $id)
+							->select('articles.id')
+							->get();
+		$tmp = array();
+		foreach ($articlePart as $eachPart) {
+			$tmp[] = $eachPart->id;
+		}
+		$articleTranslate = Article::whereIn('id', $tmp)->paginate(5);
+		$articleLike = [];
+		return view('index.person', compact('user', 'articlePush', 'articleAccept', 'articleTranslate', 'articleLike'));
 	}
 
 	public function edit($id)

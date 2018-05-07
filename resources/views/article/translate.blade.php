@@ -20,6 +20,7 @@
                             {{ csrf_field() }}
                             <input type="hidden" value="{{ old('pid', $article->id) }}" name="pid" id="pid">
                             <input type="hidden" value="{{ old('aid', $article->article->id) }}" name="aid" id="aid">
+                            <input type="hidden" value="{{ old('auid', $article->article->u_id) }}" name="auid" id="auid">
                             <div class="form-group">
                                 <input class="form-control" type="text" name="title" id="title"
                                         value="{{ old('title', $article->article->title) }}" placeholder="文章标题" readonly="readonly">

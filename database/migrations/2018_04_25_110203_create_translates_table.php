@@ -17,10 +17,11 @@ class CreateTranslatesTable extends Migration
             $table->increments('id');
 			$table->integer('p_id');
 			$table->integer('status')->default(0);
-			$table->integer('u_id');
+			$table->integer('u_id')->index();
 			$table->longText('content');
+			$table->integer('a_u_id')->index();
             $table->timestamps();
-			$table->index(['p_id', 'u_id']);
+			$table->index(['p_id', 'status', 'u_id']);
         });
     }
 
