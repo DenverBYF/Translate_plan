@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Part;
 use App\Translate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class TranslateController extends Controller
@@ -124,5 +126,26 @@ class TranslateController extends Controller
 				return redirect()->route('person.show', $uId)->with('danger', "操作失败");
 			}
 		}
+	}
+
+	/**
+	 * Like a translate part
+	 * @param int $id
+	 * @param int $status
+	 * @return Response
+	 * */
+	public function like($id, $status)
+	{
+		$uId = Auth::id();
+		$judge = DB::table('t_like')->where('u_id', $uId)->where('t_id', $id)->get();
+		if (!$judge->isEmpty()) {
+			return response('repeat', 400);
+		}
+		DB::table('t_like')->insert([
+			't_id' => $id,
+			'u_id' => $uId,
+			'status' => $status
+		]);
+		return response('ok', 200);
 	}
 }

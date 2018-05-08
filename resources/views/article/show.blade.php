@@ -317,7 +317,6 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 topic-content">
-            @include('layouts._message')
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="article-meta text-center">
@@ -330,17 +329,39 @@
                         <strong>{{ $article->title }}</strong>
                     </h1>
                     @foreach($part as $eachPart)
-                    <div class="topic-body col-md-9 col-lg-9 col-sm-9 col-xs-9" id="{{ $eachPart->id }}">
-                        {!! Parsedown::instance()->setMarkupEscaped(true)->text($eachPart->content) !!}
-                    </div>
-                    <div class="col-md-2 col-lg-2 col-md-offset-1 panel panel-default" >
-                        <div class="panel-body">
-                            <a href="{{ route('translate.edit', ['id' => $eachPart->id]) }}">
-                                <button class="text-center btn btn-danger" id="{{ $eachPart->id }}">我来翻译</button>
-                            </a>
-                        </div>
-                    </div>
-                    <hr class="col-md-12 col-lg-12 ">
+                        @if(!key_exists('translate', $eachPart))
+                            <div class="topic-body col-md-9 col-lg-9 col-sm-9 col-xs-9" id="{{ $eachPart['id'] }}">
+                                {!! Parsedown::instance()->setMarkupEscaped(true)->text($eachPart['content']) !!}
+                            </div>
+                            <div class="col-md-2 col-lg-2 col-md-offset-1 panel panel-default" >
+                                <div class="panel-body">
+                                    <a href="{{ route('translate.edit', ['id' => $eachPart['id']]) }}">
+                                        <button class="text-center btn btn-sm btn-danger"
+                                                id="{{ $eachPart['id'] }}">我来翻译</button>
+                                    </a>
+                                    <button class="text-center btn btn-sm btn-success"
+                                            id="{{ $eachPart['id'] }}" onclick="alert(1)">邀请翻译</button>
+                                </div>
+                            </div>
+                        @else
+                            <div class="topic-body col-md-9 col-lg-9 col-sm-9 col-xs-9" id="{{ $eachPart['id'] }}">
+                                {!! Parsedown::instance()->setMarkupEscaped(true)->text($eachPart['translate'][0]->content) !!}
+                            </div>
+                            <div class="col-md-2 col-lg-2 col-md-offset-1 panel panel-default" >
+                                <div class="panel-body">
+                                    @tLike(\Illuminate\Support\Facades\Auth::id(), $eachPart['translate'][0]->id)
+                                        <button class="text-center btn btn-sm btn-success lBtn"
+                                                id="{{ $eachPart['translate'][0]->id }}" onclick="t(1, this.id)">赞</button>
+                                        <button class="text-center btn btn-sm btn-danger lBtn"
+                                                id="{{ $eachPart['translate'][0]->id }}" onclick="t(-1, this.id)">踩</button>
+                                    @else
+                                        <button class="text-center btn btn-sm btn-default" disabled = "disabled">赞</button>
+                                        <button class="text-center btn btn-sm btn-default" disabled = "disabled">踩</button>
+                                        @endtLike
+                                </div>
+                            </div>
+                        @endif
+                        <hr class="col-md-12 col-lg-12 ">
                     @endforeach
 
                     <div class="operate">
@@ -358,4 +379,20 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script type="text/javascript">
+        function t(status, id) {
+            $.ajax({
+                url : '/user/translate/like/'+id+'/'+status,
+                success : function () {
+                    alert('成功');
+                },
+                error : function (err, msg) {
+                    alert("已点赞或点踩");
+                }
+            })
+        }
+    </script>
 @endsection

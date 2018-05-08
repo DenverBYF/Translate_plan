@@ -24,7 +24,9 @@ Route::middleware(['auth'])->prefix('user')->group( function () {
 	//翻译相关
 	Route::resource('/translate', 'TranslateController');
 	//审核翻译
-	Route::get('/accept/{id}/{status}', 'TranslateController@accept')->name('accept');
+	Route::get('/accept/{id}/{status}', 'TranslateController@accept')->name('accept')->where('status', '-1|1');
+	//点赞(踩)翻译
+	Route::get('/translate/like/{id}/{status}', 'TranslateController@like')->name('tLike')->where('status', '-1|1');
 });
 
 /*主页路由组*/
@@ -35,9 +37,7 @@ Route::prefix('')->group(function () {
 	})->name('users');
 
 	Route::get('topic/{id}', function ($id) {
-		$article = \App\Article::findOrFail($id);
-		$part = \App\Part::where('a_id', $id)->get();
-		return view('article.show', compact('article', 'part'));
+		return redirect()->route('article.show', ['id' => $id]);
 	})->name('topic');
 });
 

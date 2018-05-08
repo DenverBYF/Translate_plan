@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Http\Requests\ArticleRequest;
 use App\Part;
+use App\Translate;
 use App\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
@@ -24,7 +26,7 @@ class ArticleController extends Controller
     /**
      * Show the form for creating a new resource.
      * @param Article $article = null
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function create(Article $article = null)
     {
@@ -83,13 +85,20 @@ class ArticleController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function show($id)
     {
         //
 		$article = Article::findOrFail($id);
-		$part = Part::where('a_id', $id)->get();
+		$part = Part::where('a_id', $id)->get()->toArray();
+		foreach ($part as &$eachPart) {
+			$translate = Translate::where('p_id', $eachPart['id'])->where('status', 1)->first();
+			if (count($translate) != 0) {
+				$eachPart['translate'][] = $translate;
+			}
+		}
+		unset($eachPart);
 		return view('article.show', compact('article', 'part'));
     }
 
