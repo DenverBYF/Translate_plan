@@ -45,6 +45,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('message.index') }}">
+                                    消息中心
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">

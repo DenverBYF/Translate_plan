@@ -27,6 +27,8 @@ Route::middleware(['auth'])->prefix('user')->group( function () {
 	Route::get('/accept/{id}/{status}', 'TranslateController@accept')->name('accept')->where('status', '-1|1');
 	//点赞(踩)翻译
 	Route::get('/translate/like/{id}/{status}', 'TranslateController@like')->name('tLike')->where('status', '-1|1');
+	//消息相关
+	Route::resource('/message', 'MessageController');
 });
 
 /*主页路由组*/

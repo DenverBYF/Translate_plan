@@ -89,7 +89,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        //todo 多版本翻译查看
 		$article = Article::findOrFail($id);
 		$part = Part::where('a_id', $id)->get()->toArray();
 		foreach ($part as &$eachPart) {
@@ -111,6 +111,8 @@ class ArticleController extends Controller
     public function edit($id)
     {
         //
+		$article = Article::findOrFail($id);
+
     }
 
     /**

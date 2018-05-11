@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Message;
 use App\Part;
+use App\Providers\MessageServiceProvider;
 use App\Translate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -120,6 +122,12 @@ class TranslateController extends Controller
 			return view('layouts._403');
 		} else {
 			$translate->status = $status;
+			$href = route('article.show', ['id' => $translate->part->a_id]);
+			if ($status == 1) {
+				$ret = $this->sendMessage($translate->u_id, '恭喜!您的翻译已经被审核通过.', $href, '审核通过');
+			} else {
+				$ret = $this->sendMessage($translate->u_id, '抱歉!您的翻译未审核通过.', $href, '审核未通过');
+			}
 			if ($translate->save()) {
 				return redirect()->route('person.show', $uId)->with('success', "更新成功");
 			} else {
@@ -147,5 +155,25 @@ class TranslateController extends Controller
 			'status' => $status
 		]);
 		return response('ok', 200);
+	}
+
+	/**
+	 * Create a new message
+	 * @param int $tId
+	 * @param string $content
+	 * @param string $href
+	 * @param string $title
+	 * @return boolean
+	 * */
+	protected function sendMessage($tId, $content, $href = null, $title = '新的消息通知')
+	{
+		$message = new Message();
+		$message->f_id = Auth::id();
+		$message->t_id = $tId;
+		$message->content = $content;
+		$message->href = $href;
+		$message->title = $title;
+		$messageHandle = new MessageServiceProvider($message);
+		return $messageHandle->create();
 	}
 }
