@@ -55,8 +55,7 @@ class MessageController extends Controller
 		$message = Message::findOrFail($id);
 		$messageHandle = new MessageServiceProvider($message);
 		$ret = $messageHandle->read();
-		$route = route('article.show', ['id' => 12]);
-		var_dump($route);
+		return view('message.show', compact('message'));
     }
 
     /**
@@ -91,5 +90,15 @@ class MessageController extends Controller
     public function destroy($id)
     {
         //
+		$message = Message::findOrFail($id);
+		if (Auth::id() != $message->t_id) {
+			return view('layouts._403');
+		} else {
+			if ($message->delete()) {
+				return response('ok', 200);
+			} else {
+				return response('error', 500);
+			}
+		}
     }
 }

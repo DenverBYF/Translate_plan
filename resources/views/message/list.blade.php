@@ -2,7 +2,7 @@
 
     <ul class="media-list">
         @foreach ($messageAll as $topic)
-            <li class="media">
+            <li class="media" id="m{{ $topic->id }}">
                 <div class="media-left">
                     <a href="{{ route('users', ['id' => $topic->f_id]) }}">
                         <img class="media-object img-thumbnail" style="width: 52px; height: 52px;" src="{{ $topic->user->url }}" title="{{ $topic->user->name }}">
@@ -32,8 +32,11 @@
                         <span> • </span>
                         <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
                         <span class="timeago" title="最后活跃于">{{ $topic->updated_at->diffForHumans() }}</span>
-                    </div>
+                        <span> • </span>
+                        <span class="glyphicon glyphicon-remove" id="{{ $topic->id }}"
+                                aria-hidden="true" style="color: #721c24" onclick="mDelete(this.id)" ></span>
 
+                    </div>
                 </div>
             </li>
 

@@ -46,3 +46,25 @@
         </div>
     </div>
 @endsection
+
+@section('js')
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        function mDelete(id) {
+            $.ajax({
+                url : 'message/'+id,
+                type : 'DELETE',
+                success : function () {
+                    $("#m"+id).remove();
+                },
+                error : function () {
+                    alert('删除失败');
+                }
+            })
+        }
+    </script>
+@endsection
