@@ -340,7 +340,7 @@
                                                 id="{{ $eachPart['id'] }}">我来翻译</button>
                                     </a>
                                     <button class="text-center btn btn-sm btn-success"
-                                            id="{{ $eachPart['id'] }}" onclick="alert(1)">邀请翻译</button>
+                                            id="{{ $eachPart['id'] }}" onclick="invite(this.id, {{ $article->id }})">邀请翻译</button>
                                 </div>
                             </div>
                         @else
@@ -363,7 +363,6 @@
                         @endif
                         <hr class="col-md-12 col-lg-12 ">
                     @endforeach
-
                     <div class="operate">
                         <hr>
                         @if (Auth::id() === $article->u_id)
@@ -382,6 +381,8 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('js/bootbox.min.js') }}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript">
         function t(status, id) {
             $.ajax({
@@ -391,6 +392,28 @@
                 },
                 error : function (err, msg) {
                     alert("已点赞或点踩");
+                }
+            })
+        }
+        function invite(pId, aId) {
+            bootbox.prompt({
+                title : "邀请翻译",
+                callback : function (result) {
+                    $.ajax({
+                        type : 'POST',
+                        url : '/user/invite',
+                        data : {
+                            pId : pId,
+                            aId : aId,
+                            name : result
+                        },
+                        success : function () {
+                            bootbox.alert('邀请成功');
+                        },
+                        error : function (XMLHttpRequest, textStatus, errorThrown) {
+                            bootbox.alert("无此用户");
+                        }
+                    })
                 }
             })
         }
