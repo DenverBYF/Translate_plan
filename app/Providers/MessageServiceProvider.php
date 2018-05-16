@@ -9,6 +9,7 @@
 namespace App\Providers;
 
 
+use App\Jobs\SendEmail;
 use App\Message;
 
 class MessageServiceProvider
@@ -23,7 +24,10 @@ class MessageServiceProvider
 
 	public function create()
 	{
-		return $this->_message->save();
+
+		$this->_message->save();
+		SendEmail::dispatch($this->_message);
+		return true;
 	}
 
 	public function delete()
