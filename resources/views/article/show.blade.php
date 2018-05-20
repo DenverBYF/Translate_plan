@@ -2,6 +2,7 @@
 
 
 @section('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
     <style>
         .topic-body {
             font-size: 15px;
@@ -311,6 +312,9 @@
         pre code:after {
             content: normal;
         }
+        .CodeMirror {
+            height: 100px;
+        }
     </style>
 @endsection
 
@@ -376,6 +380,29 @@
                     </div>
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="text-center">
+                        <button class="btn btn-md btn-danger">点赞</button>
+                    </div>
+                    @include('comment.list', ['comment' => $article->comment])
+                </div>
+            </div>
+            <form class="form-horizontal" role="form"
+                    action="{{ route('comment.store') }}" method="post" accept-charset="utf-8" id="commentForm">
+                {{ csrf_field() }}
+                <input type="hidden" name="aId" value="{{ $article->id }}">
+                <input type="hidden" name="uId" value="{{ $article->u_id }}">
+                <div class="form-group">
+                            <textarea id="commentContent" name="content"
+                                    class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary form-control col-md-2 col-lg-2 col-sm-2"
+                            onclick="comment()">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>发表评论</button>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
@@ -383,15 +410,20 @@
 @section('js')
     <script src="{{ asset('js/bootbox.min.js') }}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script type="text/javascript">
+        var simplemde = new SimpleMDE({
+            element: document.getElementById('commentContent'),
+            placeholder : "写下你的评论"
+        });
         function t(status, id) {
             $.ajax({
                 url : '/user/translate/like/'+id+'/'+status,
                 success : function () {
-                    alert('成功');
+                    bootbox.alert('成功');
                 },
                 error : function (err, msg) {
-                    alert("已点赞或点踩");
+                    bootbox.alert("已点赞或点踩");
                 }
             })
         }
@@ -399,6 +431,9 @@
             bootbox.prompt({
                 title : "邀请翻译",
                 callback : function (result) {
+                    if (result == null) {
+                        return;
+                    }
                     $.ajax({
                         type : 'POST',
                         url : '/user/invite',

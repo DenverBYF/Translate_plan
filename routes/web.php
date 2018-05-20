@@ -31,6 +31,8 @@ Route::middleware(['auth'])->prefix('user')->group( function () {
 	Route::resource('/message', 'MessageController');
 	//邀请翻译
 	Route::post('/invite', 'InviteController@index')->name('invite');
+	//评论相关
+	Route::resource('/comment', 'CommentController');
 });
 
 /*主页路由组*/

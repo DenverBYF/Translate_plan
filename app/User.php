@@ -27,4 +27,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
+	public function comment()
+	{
+		return $this->hasMany('App\Comment', 'u_id');
+	}
 }

@@ -17,4 +17,10 @@ class Article extends Model
 		return $this->belongsTo('App\Type', 't_id');
 	}
 
+	public function comment()
+	{
+		return $this->hasMany('App\Comment', 'a_id');
+	}
+
+
 }
