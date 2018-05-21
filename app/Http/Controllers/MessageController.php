@@ -18,7 +18,7 @@ class MessageController extends Controller
     {
         //
 		$user = Auth::user();
-		$messageAll = Message::where('t_id', $user->id)->orderBy('status')->paginate(10);
+		$messageAll = Message::where('t_id', $user->id)->orderBy('status')->latest('updated_at')->paginate(10);
 		return view('message.index', compact('messageAll'));
     }
 

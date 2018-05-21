@@ -344,7 +344,7 @@
                                                 id="{{ $eachPart['id'] }}">我来翻译</button>
                                     </a>
                                     <button class="text-center btn btn-sm btn-success"
-                                            id="{{ $eachPart['id'] }}" onclick="invite(this.id, {{ $article->id }})">邀请翻译</button>
+                                            id="{{ $eachPart['id'] }}" onclick="invite(this.id ,{{ $article->id }})">邀请翻译</button>
                                 </div>
                             </div>
                         @else
@@ -383,7 +383,13 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="text-center">
-                        <button class="btn btn-md btn-danger">点赞</button>
+                        @aLike(\Illuminate\Support\Facades\Auth::id(), $article->id)
+                        <button id="aLike" class="btn btn-md btn-danger" onclick="like({{ $article->id }})">点赞</button>
+                        @else
+                        <button disabled="disabled" class="btn btn-md btn-danger">已点赞</button>
+                        @endaLike
+                        <hr>
+                        <span>已有<span id="likeCount">{{ \Illuminate\Support\Facades\DB::table('a_like')->where('a_id', $article->id)->count() }}</span>人点赞过此文章</span>
                     </div>
                     @include('comment.list', ['comment' => $article->comment])
                 </div>
@@ -449,6 +455,20 @@
                             bootbox.alert("无此用户");
                         }
                     })
+                }
+            })
+        }
+        function like(aId) {
+            $.ajax({
+                type : 'GET',
+                url : '/user/article/'+aId+'/1',
+                success : function () {
+                    $("#likeCount").text(parseInt($("#likeCount").text()) + 1);
+                    $("#aLike").attr("disabled", "disabled");
+                    $("#aLike").text("已点赞");
+                },
+                error : function (XMLHttpRequest, textStatus, errorThrown) {
+                    bootbox.alert("点赞失败");
                 }
             })
         }

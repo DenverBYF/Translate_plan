@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
 			$judge = DB::table('t_like')->where('u_id', $uId)->where('t_id', $tId)->get();
 			return $judge->isEmpty();
 		});
+		Blade::if('aLike', function ($uId, $aId) {
+			$judge = DB::table('a_like')->where('u_id', $uId)->where('a_id', $aId)->get();
+			return $judge->isEmpty();
+		});
     }
 
     /**

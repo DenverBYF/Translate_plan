@@ -138,4 +138,19 @@ class ArticleController extends Controller
         //
     }
 
+
+    public function like($id)
+	{
+		$article = Article::findOrFail($id);
+		$ret = DB::table('a_like')->insert([
+			'a_id' => $article->id,
+			'u_id' => Auth::id(),
+			'status' => 1
+		]);
+		if ($ret) {
+			return response('ok', 200);
+		} else {
+			return response('error', 500);
+		}
+	}
 }
