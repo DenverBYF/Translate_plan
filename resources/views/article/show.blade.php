@@ -399,6 +399,7 @@
                 {{ csrf_field() }}
                 <input type="hidden" name="aId" value="{{ $article->id }}">
                 <input type="hidden" name="uId" value="{{ $article->u_id }}">
+                <input id="pId" type="hidden" name="pId" value="0">
                 <div class="form-group">
                             <textarea id="commentContent" name="content"
                                     class="form-control"></textarea>
@@ -488,6 +489,33 @@
                             error : function (XMLHttpRequest, textStatus, errorThrown) {
                                     bootbox.alert("删除失败");
                                 }
+                        })
+                    } else {
+                        return;
+                    }
+                }
+            })
+        }
+        function replay(info) {
+            var infoArray;
+            infoArray = info.split("#");
+            $("#pId").val(infoArray[0]);
+            $(".CodeMirror-placeholder").text("@"+infoArray[1]+" ");
+        }
+        function deleteComment(id) {
+            bootbox.confirm({
+                message : "确定删除此评论嘛?",
+                callback : function (result) {
+                    if (result) {
+                        $.ajax({
+                            type : "DELETE",
+                            url : '/user/comment/'+id,
+                            success : function () {
+                                $("#c"+id).remove();
+                            },
+                            error : function (XMLHttpRequest, textStatus, errorThrown) {
+                                bootbox.alert("删除失败");
+                            }
                         })
                     } else {
                         return;
