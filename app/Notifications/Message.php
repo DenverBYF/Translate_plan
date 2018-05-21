@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Log;
 
 class Message extends Notification implements ShouldQueue
 {
@@ -22,6 +23,7 @@ class Message extends Notification implements ShouldQueue
     {
         //
 		$this->message = $message;
+		Log::info("{$this->message->title} to {$this->message->t_id} form {$this->message->f_id}");
     }
 
     /**

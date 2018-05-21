@@ -9,7 +9,9 @@
                 {!! Parsedown::instance()->setMarkupEscaped(true)->text($eachComment->content) !!}
             </div>
             <div class="media-right">
-                <span><i id="{{ $eachComment->id."#".$eachComment->user->name}}" class="glyphicon glyphicon-comment" onclick="replay(this.id)"></i></span>
+                @if(\Illuminate\Support\Facades\Auth::id() !== $eachComment->u_id)
+                    <span><i id="{{ $eachComment->id."#".$eachComment->user->name."#".$eachComment->user->id}}" class="glyphicon glyphicon-comment" onclick="replay(this.id)"></i></span>
+                @endif
                 @if(\Illuminate\Support\Facades\Auth::id() === $eachComment->u_id)
                     <span><i id="{{ $eachComment->id }}" class="glyphicon glyphicon-remove" onclick="deleteComment(this.id)"></i></span>
                 @endif

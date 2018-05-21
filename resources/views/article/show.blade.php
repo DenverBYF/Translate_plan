@@ -398,8 +398,9 @@
                     action="{{ route('comment.store') }}" method="post" accept-charset="utf-8" id="commentForm">
                 {{ csrf_field() }}
                 <input type="hidden" name="aId" value="{{ $article->id }}">
-                <input type="hidden" name="uId" value="{{ $article->u_id }}">
+                <input id="uId" type="hidden" name="uId" value="{{ $article->u_id }}">
                 <input id="pId" type="hidden" name="pId" value="0">
+                <input id="tId" type="hidden" name="tId" value="{{ $article->u_id }}">
                 <div class="form-group">
                             <textarea id="commentContent" name="content"
                                     class="form-control"></textarea>
@@ -501,6 +502,7 @@
             infoArray = info.split("#");
             $("#pId").val(infoArray[0]);
             $(".CodeMirror-placeholder").text("@"+infoArray[1]+" ");
+            $("#tId").val(infoArray[2]);
         }
         function deleteComment(id) {
             bootbox.confirm({

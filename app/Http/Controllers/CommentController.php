@@ -44,18 +44,18 @@ class CommentController extends Controller
 		$comment->a_id = intval($request->input('aId'));
 		$comment->u_id = Auth::id();
 		if ($request->input('pId') != 0) {
-			$replayUser = User::findOrFail($request->input('pId'));
-			$content = "@{$replayUser->name} \n".$request->input('content');
+			$replayComment = Comment::findOrFail($request->input('pId'));
+			$content = "@{$replayComment->user->name} \n".$request->input('content');
 		}
 		$comment->content = isset($content)?$content:$request->input('content');
-		$comment->p_id = $request->input('pId');
+		$comment->p_id = intval($request->input('pId'));
 		if ($comment->save()) {
-			if (Auth::id() == $request->input('uId')) {
+			if (intval($request->input('tId')) === Auth::id()) {
 				return redirect()->route('article.show', ['id' => $request->input('aId')])->with('success', '评论成功');
 			}
 			$message = new Message();
 			$message->f_id = Auth::id();
-			$message->t_id = $request->input('uId');
+			$message->t_id = intval($request->input('tId'));
 			$message->content = "您的文章有了新的评论!";
 			$message->title = "新的评论通知";
 			$message->href = route('article.show', ['id' => $request->input('aId')]);
