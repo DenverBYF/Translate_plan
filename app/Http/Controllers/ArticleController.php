@@ -136,6 +136,16 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         //
+		$article = Article::findOrFail($id);
+		if (Auth::id() != $article->u_id) {
+			return view('layouts._403');
+		} else {
+			if ($article->delete()) {
+				return response('ok', 200);
+			} else {
+				return response('error', 500);
+			}
+		}
     }
 
 

@@ -373,7 +373,7 @@
                         <a href="{{ route('article.edit', $article->id) }}" class="btn btn-default btn-xs" role="button">
                             <i class="glyphicon glyphicon-edit"></i> 编辑
                         </a>
-                        <a href="#" class="btn btn-default btn-xs" role="button">
+                        <a href="#" class="btn btn-default btn-xs" role="button" onclick="deleteArticle({{ $article->id }})">
                             <i class="glyphicon glyphicon-trash"></i> 删除
                         </a>
                         @endif
@@ -469,6 +469,29 @@
                 },
                 error : function (XMLHttpRequest, textStatus, errorThrown) {
                     bootbox.alert("点赞失败");
+                }
+            })
+        }
+        function deleteArticle(aId) {
+            bootbox.confirm({
+                message : "确定删除此篇文章嘛?",
+                callback : function (result) {
+                    if (result) {
+                        $.ajax({
+                            type : "DELETE",
+                            url : '/user/article/'+aId,
+                            success : function () {
+                                bootbox.alert('删除成功', function () {
+                                    window.location.href = '/home/';
+                                })
+                            },
+                            error : function (XMLHttpRequest, textStatus, errorThrown) {
+                                    bootbox.alert("删除失败");
+                                }
+                        })
+                    } else {
+                        return;
+                    }
                 }
             })
         }
